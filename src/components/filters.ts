@@ -5,7 +5,7 @@ function options(items: readonly string[]): string {
 }
 export function filtersMarkup(): string {
   return `<section class="filter-panel" aria-label="Buscar y filtrar ejercicios">
-    <div class="search-field"><i data-lucide="search" aria-hidden="true"></i><label class="sr-only" for="search">Buscar por nombre</label><input id="search" type="search" placeholder="¿Qué quieres entrenar hoy?" autocomplete="off" maxlength="100" /><kbd aria-hidden="true">/</kbd></div>
+    <div class="search-field"><i data-lucide="search" aria-hidden="true"></i><label class="sr-only" for="search">Buscar por nombre</label><input id="search" type="search" placeholder="¿Qué quieres entrenar hoy?" autocomplete="off" maxlength="100" aria-keyshortcuts="Control+k Meta+k" aria-describedby="search-shortcut-hint" /><kbd aria-hidden="true">Ctrl/⌘ K</kbd><span id="search-shortcut-hint" class="sr-only">Atajo: Control más K, o Comando más K en Mac, cuando no estás editando un campo.</span></div>
     <div class="select-field"><label for="muscle">Grupo muscular</label><select id="muscle"><option value="">Todos los músculos</option>${options(muscleGroups)}</select></div>
     <div class="select-field"><label for="difficulty">Dificultad</label><select id="difficulty"><option value="">Todos los niveles</option>${options(difficulties)}</select></div>
     <div class="select-field"><label for="equipment">Equipamiento</label><select id="equipment"><option value="">Todo el equipamiento</option>${options(equipmentOptions)}</select></div>

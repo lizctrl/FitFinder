@@ -14,6 +14,7 @@ export function createExerciseDetail(container: HTMLElement, favorites: {
   dialog.id = 'exercise-detail';
   dialog.className = 'exercise-detail';
   dialog.setAttribute('aria-labelledby', 'detail-title');
+  dialog.setAttribute('aria-describedby', 'detail-description');
   dialog.innerHTML = `
     <div class="detail-topbar"><span class="eyebrow">CONOCE EL MOVIMIENTO</span><button type="button" class="detail-close" aria-label="Cerrar detalle del ejercicio" autofocus><span aria-hidden="true">×</span></button></div>
     <div class="detail-content">
@@ -48,6 +49,20 @@ export function createExerciseDetail(container: HTMLElement, favorites: {
     const bounds = dialog.getBoundingClientRect();
     return event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom;
   };
+  // Keep Tab at the dialog boundaries, including in embedded browser surfaces.
+  dialog.addEventListener('keydown', event => {
+    if (event.key !== 'Tab') return;
+    const controls = [...dialog.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+      .filter(control => control.getClientRects().length > 0 && getComputedStyle(control).visibility !== 'hidden');
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (!first) { event.preventDefault(); return; }
+    if (event.shiftKey && (document.activeElement === first || document.activeElement === dialog)) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault(); first.focus();
+    }
+  });
   closeButton.addEventListener('click', () => dialog.close());
   dialog.querySelector('.routine-view-link')!.addEventListener('click', () => dialog.close());
   dialog.addEventListener('pointerdown', event => { pointerStartedOutside = outside(event); });

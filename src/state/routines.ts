@@ -40,12 +40,33 @@ export function createRoutines(validExerciseIds: readonly string[]) {
   return {
     get list(): Routine[] { return routines.map(routine => ({ ...routine, items: routine.items.map(item => ({ ...item })) })); },
     get warning(): string { return warning; },
+    appendImported(incoming: readonly Routine[]): boolean {
+      routines.push(...incoming.map(routine => ({ id: crypto.randomUUID(), name: routine.name, items: routine.items.map(item => ({ ...item })) })));
+      persist();
+      return !warning;
+    },
     create(name: string): RoutineResult {
       if (!validName(name)) return fail('Escribe un nombre de entre 1 y 60 caracteres.');
       const routine: Routine = { id: crypto.randomUUID(), name: name.trim(), items: [] };
       routines.push(routine);
       persist();
       return { ok: true, message: 'Rutina creada.', routineId: routine.id };
+    },
+    duplicate(id: string): RoutineResult {
+      const original = routines.find(routine => routine.id === id);
+      if (!original) return fail('No encontramos esa rutina.');
+      const names = new Set(routines.map(routine => routine.name.normalize('NFC').toLocaleLowerCase('es')));
+      let copyNumber = 1;
+      let name: string;
+      do {
+        const suffix = copyNumber === 1 ? ' (copia)' : ` (copia ${copyNumber})`;
+        name = `${original.name.slice(0, 60 - suffix.length).trimEnd()}${suffix}`;
+        copyNumber++;
+      } while (names.has(name.normalize('NFC').toLocaleLowerCase('es')));
+      const copy: Routine = { id: crypto.randomUUID(), name, items: original.items.map(item => ({ ...item })) };
+      routines.push(copy);
+      persist();
+      return { ok: true, message: 'Rutina duplicada con los cambios guardados. Puedes editar la copia sin cambiar la original.', routineId: copy.id };
     },
     rename(id: string, name: string): RoutineResult {
       const routine = routines.find(item => item.id === id);
@@ -60,6 +81,18 @@ export function createRoutines(validExerciseIds: readonly string[]) {
       routines = routines.filter(item => item.id !== id);
       persist();
       return { ok: true, message: 'Rutina eliminada.' };
+    },
+    restore(snapshot: Routine, index: number): RoutineResult {
+      if (!snapshot.id || routines.some(routine => routine.id === snapshot.id)) return fail('No se puede restaurar: ya existe una rutina con ese identificador.');
+      if (!validName(snapshot.name) || !Number.isInteger(index) || index < 0) return fail('No se puede restaurar esa rutina.');
+      const ids = new Set<string>();
+      for (const item of snapshot.items) {
+        if (!allowed.has(item.exerciseId) || ids.has(item.exerciseId) || !validSets(item.sets) || !validReps(item.reps)) return fail('La rutina contiene ejercicios o prescripciones no válidos.');
+        ids.add(item.exerciseId);
+      }
+      routines.splice(Math.min(index, routines.length), 0, { ...snapshot, items: snapshot.items.map(item => ({ ...item })) });
+      persist();
+      return { ok: true, message: 'Rutina restaurada.', routineId: snapshot.id };
     },
     add(id: string, exerciseId: string, sets: number, reps: number): RoutineResult {
       const routine = routines.find(item => item.id === id);
@@ -79,6 +112,18 @@ export function createRoutines(validExerciseIds: readonly string[]) {
       item.reps = reps;
       persist();
       return { ok: true, message: 'Series y repeticiones actualizadas.' };
+    },
+    moveExercise(id: string, exerciseId: string, direction: -1 | 1): RoutineResult {
+      const routine = routines.find(item => item.id === id);
+      if (!routine) return fail('No encontramos esa rutina.');
+      if (direction !== -1 && direction !== 1) return fail('La dirección de movimiento no es válida.');
+      const index = routine.items.findIndex(item => item.exerciseId === exerciseId);
+      if (index < 0) return fail('No encontramos ese ejercicio en la rutina.');
+      const target = index + direction;
+      if (target < 0 || target >= routine.items.length) return fail('El ejercicio ya está en el límite de la rutina.');
+      [routine.items[index], routine.items[target]] = [routine.items[target], routine.items[index]];
+      persist();
+      return { ok: true, message: `Orden actualizado. Posición ${target + 1} de ${routine.items.length}.` };
     },
     removeExercise(id: string, exerciseId: string): RoutineResult {
       const routine = routines.find(item => item.id === id);

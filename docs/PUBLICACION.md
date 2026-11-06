@@ -4,7 +4,7 @@
 
 Esta entrega añade `.github/workflows/checks.yml`, `vercel.json`, `.nvmrc` y pruebas del catálogo. Actualiza la descripción de la página, los requisitos de Node y la documentación. No añade cuentas, backend ni servicios de pago.
 
-GitHub ejecutará instalación reproducible (`npm ci`), pruebas y compilación en cada push a `main` y en cada pull request. El workflow está creado, pero aún no se ha ejecutado en GitHub.
+GitHub ejecutará instalación reproducible (`npm ci`), pruebas y compilación en cada push a `main` y en cada pull request. La ejecución del workflow en GitHub no está verificada en esta entrega.
 
 Vercel instalará mediante `npm ci`, ejecutará `npm test && npm run build` y publicará `dist`. No hay reglas de reescritura: la navegación usa fragmentos (`#catalog`, `#favorites`, `#routines`) sobre una sola página.
 
@@ -20,21 +20,21 @@ npm run preview
 
 `nvm use` es opcional si Node 22 ya está instalado; requiere nvm. Usa la URL que muestre Vite para comprobar la compilación de producción. Las pruebas se ejecutan con el runner incluido en Node y utilizan TypeScript para cargar los módulos: no necesitan otra herramienta de testing.
 
-Los 16 casos automatizados comprueban datos y recursos del catálogo, búsquedas, filtros, favoritos y rutinas, persistencia simulada, datos inválidos y errores de almacenamiento. La compilación verifica TypeScript estricto y genera los archivos estáticos.
+Los 32 casos automatizados comprueban datos y recursos del catálogo, búsquedas, filtros, favoritos y rutinas, persistencia simulada, datos inválidos y errores de almacenamiento. La compilación verifica TypeScript estricto y genera los archivos estáticos.
 
 En las etapas anteriores se verificaron en navegador los controles, teclado y tamaños móviles de 375 px. Antes de presentar el proyecto como auditado, falta una revisión con lector de pantalla. No se ha ejecutado una auditoría WCAG completa ni se garantiza una puntuación Lighthouse.
 
-## Primera subida a GitHub
+## Guardar y subir los cambios
 
 El repositorio local tiene configurado este destino:
 
 https://github.com/lizctrl/FitFinder
 
-Todavía no hay commits locales. Cuando se autorice la subida:
+Ya existe el commit local `91cdd90` (etapa 5). Las mejoras posteriores siguen pendientes de commit en la revisión de la etapa 11. Cuando se decida guardar y subir esta entrega:
 
 ```bash
 git add .gitignore .nvmrc .github package.json package-lock.json tsconfig.json vercel.json index.html src public tests docs README.md
-git commit -m "Build FitFinder exercise explorer, favorites and routines"
+git commit -m "Complete routine organization, backups and portfolio documentation"
 git push -u origin main
 ```
 

@@ -17,6 +17,13 @@ export function createFavorites(validIds: readonly string[]) {
     }
   }
   return {
+    get list(): string[] { return [...ids]; },
+    merge(incoming: readonly string[]): boolean {
+      incoming.filter(id => allowed.has(id)).forEach(id => ids.add(id));
+      const saved = writeStoredValue(FAVORITES_KEY, [...ids]);
+      warning = saved ? '' : 'No se pudieron guardar los favoritos importados. Permanecen disponibles solo en esta sesión.';
+      return saved;
+    },
     has: (id: string): boolean => ids.has(id),
     get size(): number { return ids.size; },
     get warning(): string { return warning; },
@@ -29,3 +36,5 @@ export function createFavorites(validIds: readonly string[]) {
     },
   };
 }
+
+export type FavoritesStore = ReturnType<typeof createFavorites>;

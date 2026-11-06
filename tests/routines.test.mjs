@@ -54,3 +54,77 @@ test('fallo al guardar conserva las rutinas en memoria y avisa', () => {
   assert.ok(store.warning); store.add(id,'ex-02',3,12);
   assert.equal(store.list[0].items.length, 1); assert.ok(store.warning);
 });
+
+test('reordenar conserva la prescripción y persiste el orden al recargar', () => {
+  const env = setup(); const store = env.create(); const id = store.create('Orden').routineId;
+  store.add(id, 'ex-01', 4, 10); store.add(id, 'ex-02', 3, 12);
+  const otherId = store.create('Otra rutina').routineId; store.add(otherId,'ex-01',2,8);
+  assert.equal(store.moveExercise(id,'ex-02',-1).ok,true);
+  const afterMove = store.list.find(routine=>routine.id===id).items;
+  assert.equal(afterMove[0].exerciseId,'ex-02'); assert.equal(afterMove[0].sets,3); assert.equal(afterMove[0].reps,12);
+  const reload = env.create();
+  assert.equal(reload.list[0].items[0].exerciseId,'ex-02');
+  assert.equal(reload.list[1].items[0].sets,2);
+  assert.equal(reload.moveExercise(id,'ex-02',1).ok,true);
+  assert.equal(reload.list[0].items[0].exerciseId,'ex-01');
+});
+test('límites, rutina vacía e IDs inválidos no cambian los datos guardados', () => {
+  const env = setup(); const store = env.create(); const id = store.create('Límites').routineId;
+  assert.equal(store.moveExercise(id,'ex-01',1).ok,false);
+  store.add(id,'ex-01',3,12); store.add(id,'ex-02',3,12);
+  const original = env.raw();
+  for (const [routineId, exerciseId, direction] of [[id,'ex-01',-1],[id,'ex-02',1],['missing','ex-01',1],[id,'missing',1],[id,'ex-01',0],[id,'ex-01',NaN]]) assert.equal(store.moveExercise(routineId,exerciseId,direction).ok,false);
+  assert.equal(env.raw(),original);
+});
+test('reordenar con almacenamiento bloqueado mantiene la sesión y el aviso', () => {
+  const store = setup(null,true).create(); const id = store.create('Orden sin guardar').routineId;
+  store.add(id,'ex-01',3,12); store.add(id,'ex-02',3,12);
+  assert.equal(store.moveExercise(id,'ex-01',1).ok,true);
+  assert.equal(store.list[0].items[0].exerciseId,'ex-02');
+  assert.ok(store.warning);
+});
+
+test('duplicación independiente: conserva orden, prescripción y persistencia', () => {
+  const env = setup(); const store = env.create(); const id = store.create('Fuerza').routineId;
+  store.add(id,'ex-02',4,10); store.add(id,'ex-01',3,12);
+  const result = store.duplicate(id); assert.equal(result.ok,true); assert.notEqual(result.routineId,id);
+  const copy = store.list.find(routine=>routine.id===result.routineId);
+  assert.equal(copy.name,'Fuerza (copia)'); assert.equal(copy.items[0].exerciseId,'ex-02'); assert.equal(copy.items[0].sets,4);
+  store.update(copy.id,'ex-02',5,8); store.moveExercise(copy.id,'ex-01',-1); store.rename(copy.id,'Variante');
+  const original = store.list.find(routine=>routine.id===id);
+  assert.equal(original.name,'Fuerza'); assert.equal(original.items[0].exerciseId,'ex-02'); assert.equal(original.items[0].sets,4); assert.equal(original.items[0].reps,10);
+  const reload = env.create(); assert.equal(reload.list.length,2); assert.equal(reload.list[1].name,'Variante'); assert.equal(reload.list[1].items[0].exerciseId,'ex-01');
+  store.remove(copy.id); assert.equal(store.list[0].id,id);
+});
+test('nombres de copia únicos, límites y rutina vacía', () => {
+  const store = setup().create(); const id = store.create('A'.repeat(60)).routineId;
+  const first = store.duplicate(id); const second = store.duplicate(id);
+  const a=store.list.find(routine=>routine.id===first.routineId); const b=store.list.find(routine=>routine.id===second.routineId);
+  assert.ok(a.name.length<=60); assert.ok(b.name.length<=60); assert.notEqual(a.name,b.name); assert.ok(b.name.endsWith('(copia 2)')); assert.equal(a.items.length,0);
+  assert.equal(store.duplicate('missing').ok,false); assert.equal(store.list.length,3);
+});
+test('duplicación con almacenamiento bloqueado conserva la copia y avisa', () => {
+  const store=setup(null,true).create(); const id=store.create('Sin conexión').routineId; store.add(id,'ex-01',3,12);
+  const result=store.duplicate(id); assert.equal(result.ok,true); assert.equal(store.list.length,2); assert.ok(store.warning);
+  store.removeExercise(result.routineId,'ex-01'); assert.equal(store.list[0].items.length,1);
+});
+
+test('restaurar conserva ID, posición, orden y últimas prescripciones guardadas', () => {
+  const env=setup();const store=env.create();store.create('Primera');const id=store.create('Segunda').routineId;store.create('Tercera');
+  store.add(id,'ex-02',3,12);store.add(id,'ex-01',4,10);store.update(id,'ex-02',5,8);
+  const snapshot=store.list[1];store.remove(id);const result=store.restore(snapshot,1);
+  assert.equal(result.ok,true);assert.equal(store.list[1].id,id);assert.equal(store.list[1].items[0].exerciseId,'ex-02');assert.equal(store.list[1].items[0].sets,5);
+  snapshot.items[0].sets=49;assert.equal(store.list[1].items[0].sets,5);
+  const reload=env.create();assert.equal(reload.list[1].id,id);assert.equal(reload.list[1].items[0].reps,8);
+});
+test('restaurar no duplica IDs ni acepta posiciones o datos inválidos', () => {
+  const store=setup().create();const id=store.create('Rutina').routineId;const snapshot=store.list[0];
+  assert.equal(store.restore(snapshot,0).ok,false);store.remove(id);
+  assert.equal(store.restore(snapshot,-1).ok,false);assert.equal(store.restore({...snapshot,name:' '},0).ok,false);
+  assert.equal(store.restore({...snapshot,items:[{exerciseId:'unknown',sets:3,reps:12}]},0).ok,false);
+  assert.equal(store.restore(snapshot,100).ok,true);assert.equal(store.list.length,1);
+});
+test('restaurar con almacenamiento bloqueado conserva la recuperación en memoria', () => {
+  const store=setup(null,true).create();const id=store.create('Recuperar').routineId;const snapshot=store.list[0];store.remove(id);
+  assert.equal(store.restore(snapshot,0).ok,true);assert.equal(store.list[0].id,id);assert.ok(store.warning);
+});

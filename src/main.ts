@@ -1,4 +1,6 @@
 import { createIcons, Dumbbell, ArrowUpRight, Search, LayoutGrid, Focus, SlidersHorizontal, RotateCcw, MoveUpRight, Leaf, Heart } from 'lucide';
+import { isSearchShortcut } from './keyboard';
+import { createBackupPanel } from './components/backup-panel';
 import { createRoutines } from './state/routines';
 import { createRoutinesView } from './components/routines-view';
 import { createFavorites } from './state/favorites';
@@ -38,6 +40,7 @@ app.innerHTML = `
       <div id="empty-state" class="empty-state" hidden><i data-lucide="search" aria-hidden="true"></i><h3>No encontramos ese movimiento</h3><p>Prueba otro nombre o cambia los filtros para seguir explorando.</p><button id="empty-reset" class="primary-button" type="button">Ver todos los ejercicios</button></div>
     </section>
     <section id="routines" class="routines-section" aria-labelledby="routines-title" hidden></section>
+    <section id="backups" aria-label="Copias de seguridad"></section>
     <aside class="bottom-note"><span class="note-icon"><i data-lucide="leaf" aria-hidden="true"></i></span><div><strong>El mejor entrenamiento empieza con un movimiento.</strong><p>Explora a tu ritmo y encuentra lo que funciona para ti.</p></div><span class="note-number">01 / EXPLORA</span></aside>
   </main>
   <footer><span class="footer-brand">FitFinder<span>.</span></span><span>Muévete con intención.</span><span>Catálogo local · Explora y aprende</span></footer>`;
@@ -78,9 +81,11 @@ const grid = document.querySelector<HTMLDivElement>('#exercise-grid')!;
 const empty = document.querySelector<HTMLDivElement>('#empty-state')!;
 const count = document.querySelector<HTMLParagraphElement>('#result-count')!;
 const categories = document.querySelectorAll<HTMLButtonElement>('[data-group]');
+createBackupPanel(document.querySelector<HTMLElement>('#backups')!, favorites, routines, exercises.map(exercise => exercise.id), render);
 
 function render(): void {
   const inRoutines = currentView === 'routines';
+  document.title = `${inRoutines ? 'Rutinas' : currentView === 'favorites' ? 'Favoritos' : 'Ejercicios'} · FitFinder`;
   document.querySelector<HTMLElement>('#catalog')!.hidden = inRoutines;
   routineSection.hidden = !inRoutines;
   if (inRoutines) routineView.render();
@@ -166,7 +171,7 @@ document.querySelector('#empty-reset')!.addEventListener('click', () => {
   } else clearFilters();
 });
 document.addEventListener('keydown', event => {
-  if (currentView !== 'routines' && !detail.isOpen && event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !(event.target instanceof HTMLInputElement) && !(event.target instanceof HTMLSelectElement) && !(event.target instanceof HTMLTextAreaElement)) {
+  if (currentView !== 'routines' && !detail.isOpen && isSearchShortcut(event) && !(event.target instanceof HTMLInputElement) && !(event.target instanceof HTMLSelectElement) && !(event.target instanceof HTMLTextAreaElement)) {
     event.preventDefault();
     search.focus();
   }
