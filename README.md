@@ -84,3 +84,7 @@ GitHub Actions tiene configurados `npm ci`, `npm test` y `npm run build` en Node
 - [Borradores y legibilidad](docs/ETAPA-6.md), [orden](docs/ETAPA-7.md), [respaldos](docs/ETAPA-8.md), [duplicación](docs/ETAPA-9.md) y [recuperación](docs/ETAPA-10.md).
 
 Consulta la [revisión de teclado, estructura y contraste](docs/ETAPA-12.md) para los cambios y límites de la revisión de accesibilidad.
+
+## Presentación del enlace
+
+Preparados metadatos Open Graph, imagen de portada de 1200 × 630, URL canónica, robots y sitemap. Estos cambios locales requieren el próximo despliegue para comprobar la vista previa pública. Consulta [la etapa 13](docs/ETAPA-13.md).

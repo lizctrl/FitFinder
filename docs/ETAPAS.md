@@ -55,3 +55,7 @@ Atajo con modificador, límites de foco del diálogo, descripción asociada y t�
 ## Publicación — verificada
 
 El propietario publicó https://fit-finder-coral.vercel.app/. Verificados catálogo, búsqueda, detalle, favoritos, rutinas y recarga en el sitio público; móvil a 375 px sin desbordamiento. Se retiraron solo los datos creados para QA. README y guía de presentación actualizados con la URL.
+
+## 13. Presentación del enlace — preparada localmente
+
+Imagen de vista previa, Open Graph, URL canónica, robots y sitemap. Compilación, metadatos y recursos de `dist` verificados. Explicación en `docs/ETAPA-13.md`. Commit, despliegue y comprobación de las tarjetas en plataformas públicas pendientes.
