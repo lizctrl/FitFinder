@@ -111,3 +111,9 @@ body{background:radial-gradient(ellipse at 85% 0,rgba(126,156,77,.1),transparent
   .category[aria-pressed="true"], .favorite-button[aria-pressed="true"] { border: 2px solid Highlight; }
   .order-button:disabled { border-style: dashed; }
 }
+/* Specific anatomical illustrations: preserve both full poses on white. */
+.card-image.anatomy-image { background: #fff; aspect-ratio: 3 / 2; }
+.anatomy-image img { object-fit: contain; background: #fff; padding: 32px 8px 28px; }
+.anatomy-image .image-label { color: #f5f7ef; background: #0c0f0be6; padding: 4px 7px; border-radius: 4px; font-size: 9px; letter-spacing: .6px; }
+.anatomy-image .equipment-label { background: #0c0f0be6; }
+.detail-figure.anatomy-figure img { height: auto; aspect-ratio: 3 / 2; object-fit: contain; background: #fff; padding: 10px; }

@@ -16,8 +16,12 @@ const base = {query:'',muscleGroup:'',difficulty:'',equipment:''};
 test('catálogo íntegro y recursos locales disponibles', () => {
   assert.equal(exercises.length,20);
   assert.equal(new Set(exercises.map(exercise=>exercise.id)).size,exercises.length);
+  assert.equal(new Set(exercises.map(exercise=>exercise.image)).size,exercises.length);
   for (const exercise of exercises) {
     assert.ok(exercise.name.trim());
+    assert.equal(exercise.illustration?.kind,'anatomical');
+    assert.ok(exercise.illustration.alt.length>30);
+    assert.ok(exercise.image.startsWith('/images/anatomia/'));
     assert.ok(exercise.description.trim());
     assert.ok(muscleGroups.includes(exercise.muscleGroup));
     assert.ok(difficulties.includes(exercise.difficulty));

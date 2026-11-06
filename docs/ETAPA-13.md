@@ -1,5 +1,7 @@
 # Etapa 13 — Presentación del enlace público
 
+**Actualización:** el commit `62724c0` ya fue subido por el propietario y sus metadatos y recursos están publicados. Consulta la [verificación de la etapa 14](ETAPA-14.md). Los pasos siguientes documentan la implementación original.
+
 ## Archivos
 
 - `index.html`: título, descripción e imagen Open Graph, tarjeta con imagen grande, texto alternativo y URL canónica.

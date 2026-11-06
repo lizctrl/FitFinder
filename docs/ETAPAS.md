@@ -59,3 +59,7 @@ El propietario publicó https://fit-finder-coral.vercel.app/. Verificados catál
 ## 13. Presentación del enlace — preparada localmente
 
 Imagen de vista previa, Open Graph, URL canónica, robots y sitemap. Compilación, metadatos y recursos de `dist` verificados. Explicación en `docs/ETAPA-13.md`. Commit, despliegue y comprobación de las tarjetas en plataformas públicas pendientes.
+
+## 14. Verificación de metadatos públicos — completada
+
+Commit `62724c0` sincronizado con la referencia local de origin/main. Verificados en el navegador del sitio publicado: URL canónica, título e imagen Open Graph, robots.txt, sitemap e imagen JPEG de 1200 × 630. Sin cambios en datos del usuario. La tarjeta de cada plataforma social sigue sin verificarse. Registro en `docs/ETAPA-14.md`.

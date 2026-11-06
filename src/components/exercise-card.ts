@@ -4,11 +4,12 @@ import type { Exercise } from '../types/exercise';
 export function exerciseCard(exercise: Exercise, index: number, onOpen: (exercise: Exercise, trigger: HTMLButtonElement) => void, isFavorite: boolean, onToggle: () => void): HTMLElement {
   const card = document.createElement('article');
   card.className = 'exercise-card';
+  const anatomical = exercise.illustration?.kind === 'anatomical';
   // This template contains only the trusted, local catalog; search input is never inserted here.
   card.innerHTML = `
-    <div class="card-image">
-      <img src="${exercise.image}" alt="" loading="lazy" width="260" height="210" />
-      <span class="image-label">Ilustración · ${String(index + 1).padStart(2, '0')}</span>
+    <div class="card-image${anatomical ? ' anatomy-image' : ''}">
+      <img src="${exercise.image}" alt="" decoding="async" loading="lazy" width="${anatomical ? 1536 : 260}" height="${anatomical ? 1024 : 210}" />
+      <span class="image-label">${anatomical ? 'Anatomía' : 'Ilustración'} · ${String(index + 1).padStart(2, '0')}</span>
       <span class="equipment-label">${exercise.equipment}</span>
     </div>
     <div class="card-body">
@@ -17,6 +18,7 @@ export function exerciseCard(exercise: Exercise, index: number, onOpen: (exercis
       <p>${exercise.description}</p>
       <div class="card-footer"><i data-lucide="focus" aria-hidden="true"></i><span>${exercise.primaryMuscles.join(' · ')}</span></div>
     </div>`;
+  card.querySelector<HTMLImageElement>('img')!.alt = exercise.illustration?.alt ?? '';
   const openButton = document.createElement('button');
   openButton.type = 'button';
   openButton.dataset.detailId = exercise.id;

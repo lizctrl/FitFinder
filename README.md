@@ -56,7 +56,7 @@ La navegación usa `#catalog`, `#favorites` y `#routines`, de modo que no necesi
 
 ## Diseño y accesibilidad
 
-Paleta de negro `#0C0F0B`, oliva `#191F15` y lima `#C4F58A`. Tipografías DM Sans y Manrope mediante Google Fonts, con alternativa de sistema. Iconos Lucide e ilustraciones SVG locales identificadas como ilustraciones, compartidas por grupo muscular; no representan la técnica de cada ejercicio.
+Paleta de negro `#0C0F0B`, oliva `#191F15` y lima `#C4F58A`. Tipografías DM Sans y Manrope mediante Google Fonts, con alternativa de sistema. Iconos Lucide y 20 ilustraciones anatómicas originales: una por ejercicio, en grises con músculos destacados en rojo. Se muestran completas sobre fondo blanco, en tarjetas y detalle; las planchas presentan dos ángulos de una postura estática. Los SVG genéricos anteriores se conservan como archivos históricos, pero ya no se usan en el catálogo. Consulta los [archivos y prompts de la colección](docs/ILUSTRACIONES-ANATOMICAS.md).
 
 La interfaz incorpora etiquetas, foco visible, controles con nombres accesibles, estados anunciados y respeto a `prefers-reduced-motion`. El buscador ofrece Ctrl+K o Comando+K y la pestaña identifica la vista activa. El diálogo nativo bloquea la interacción con el fondo, se cierra con Escape y devuelve el foco al disparador. Se han revisado tamaños móviles y escritorio, pero **no se ha realizado una auditoría WCAG completa ni con lector de pantalla**.
 
@@ -87,4 +87,4 @@ Consulta la [revisión de teclado, estructura y contraste](docs/ETAPA-12.md) par
 
 ## Presentación del enlace
 
-Preparados metadatos Open Graph, imagen de portada de 1200 × 630, URL canónica, robots y sitemap. Estos cambios locales requieren el próximo despliegue para comprobar la vista previa pública. Consulta [la etapa 13](docs/ETAPA-13.md).
+Publicados y verificados: metadatos Open Graph, imagen de portada de 1200 × 630, URL canónica, robots y sitemap. La presentación concreta de la tarjeta en cada red social no se ha comprobado. Consulta [la implementación](docs/ETAPA-13.md) y [la verificación pública](docs/ETAPA-14.md).

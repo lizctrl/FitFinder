@@ -99,6 +99,11 @@ export function createExerciseDetail(container: HTMLElement, favorites: {
       text('#detail-equipment', exercise.equipment);
       const image = dialog.querySelector<HTMLImageElement>('img')!;
       image.src = exercise.image;
+      image.alt = exercise.illustration?.alt ?? '';
+      image.decoding = 'async';
+      const anatomical = exercise.illustration?.kind === 'anatomical';
+      dialog.querySelector('.detail-figure')!.classList.toggle('anatomy-figure', anatomical);
+      text('figcaption', anatomical ? `Ilustración anatómica orientativa de ${exercise.name.toLowerCase()} · Músculos destacados en rojo.` : 'Ilustración del grupo muscular · No representa la técnica del ejercicio.');
       const populate = (selector: string, values: string[]): void => {
         dialog.querySelector(selector)!.replaceChildren(...values.map(value => {
           const item = document.createElement('li');

@@ -14,6 +14,7 @@ export interface Exercise {
   primaryMuscles: string[];
   instructions: string[];
   image: string;
+  illustration?: { kind: 'anatomical'; alt: string };
 }
 export interface ExerciseFilters {
   query: string;
