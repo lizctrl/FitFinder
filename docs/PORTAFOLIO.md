@@ -35,4 +35,4 @@ Se pueden mostrar 32 pruebas automatizadas y una compilación TypeScript correct
 
 No hay backend, cuentas, sincronización automática, estadísticas de progreso ni seguimiento de entrenamientos. Las imágenes son ilustraciones locales de grupos musculares. No hay métricas de usuarios, auditoría completa de accesibilidad ni puntuación Lighthouse verificadas.
 
-La publicación queda pendiente. No añadas una URL de demostración al CV o a GitHub hasta confirmar que el despliegue funciona.
+Sitio publicado y verificado: [FitFinder](https://fit-finder-coral.vercel.app/). Esta URL ya puede utilizarse como demostración en GitHub y en el portafolio.

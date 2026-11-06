@@ -51,3 +51,7 @@ README consolidado, explicaciones históricas conservadas, guía de demostració
 ## 12. Teclado y estructura accesible — implementada
 
 Atajo con modificador, límites de foco del diálogo, descripción asociada y títulos de vista. Revisión de etiquetas y cuatro combinaciones principales de contraste. Treinta y dos pruebas y compilación correctas. Detalles, fuentes y pruebas pendientes en `docs/ETAPA-12.md`. No equivale a una auditoría WCAG completa.
+
+## Publicación — verificada
+
+El propietario publicó https://fit-finder-coral.vercel.app/. Verificados catálogo, búsqueda, detalle, favoritos, rutinas y recarga en el sitio público; móvil a 375 px sin desbordamiento. Se retiraron solo los datos creados para QA. README y guía de presentación actualizados con la URL.

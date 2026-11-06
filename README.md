@@ -1,5 +1,7 @@
 # FitFinder
 
+**[Ver FitFinder publicado](https://fit-finder-coral.vercel.app/)**
+
 Descubre ejercicios y construye rutinas a tu medida. Aplicación de portafolio desarrollada con **TypeScript y Vite**, sin framework de UI, backend ni autenticación.
 
 ![Catálogo FitFinder en negro y verde lima](docs/etapa-6-legibilidad.png)
@@ -72,7 +74,7 @@ Los 32 casos automatizados comprueban catálogo, filtros, persistencia simulada,
 
 GitHub Actions tiene configurados `npm ci`, `npm test` y `npm run build` en Node 22. Su ejecución remota no está verificada en esta entrega. Vercel está configurado para instalar, probar y compilar, con salida `dist`. No necesita variables de entorno.
 
-**La publicación en Vercel está aplazada. No hay una URL pública verificada.** Consulta la [guía de publicación](docs/PUBLICACION.md).
+**Publicado en Vercel:** [fit-finder-coral.vercel.app](https://fit-finder-coral.vercel.app/). Se verificaron catálogo, búsqueda, detalle, favoritos, creación de rutinas y persistencia tras recargar. Consulta la [guía de publicación](docs/PUBLICACION.md).
 
 ## Documentación
 

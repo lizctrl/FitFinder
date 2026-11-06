@@ -1,4 +1,8 @@
-# Etapa 5 — Preparación para publicar
+# Publicación y verificación
+
+Sitio publicado por el propietario: **https://fit-finder-coral.vercel.app/**. Verificado en navegador: 20 ejercicios, búsqueda sin tildes, detalle, favorito, creación de rutina y persistencia tras recarga. Ancho de 375 px sin desbordamiento horizontal. Los datos de QA se retiraron. No se revisaron los registros internos de Vercel ni el estado de GitHub Actions.
+
+Los pasos siguientes se conservan como guía para futuros despliegues.
 
 ## Qué cambia
 
@@ -46,7 +50,7 @@ Antes de ejecutar el push, comprobar que ese repositorio es el destino deseado, 
 2. Selecciona `lizctrl/FitFinder` y la raíz del repositorio.
 3. Usa el preset Vite y Node 22. El archivo `vercel.json` fija instalación, build y salida.
 4. No agregues variables de entorno: esta versión no las necesita.
-5. Revisa el proyecto y publica. Conserva la URL que devuelva Vercel; no hay una URL pública confirmada todavía.
+5. Revisa el proyecto y publica. Conserva la URL que devuelva Vercel. La URL actual verificada es https://fit-finder-coral.vercel.app/.
 6. Conecta la URL del sitio en la sección About de GitHub cuando esté verificada.
 
 Referencias oficiales: [Vite en Vercel](https://vercel.com/docs/frameworks/frontend/vite) y [despliegue estático de Vite](https://vite.dev/guide/static-deploy.html).
