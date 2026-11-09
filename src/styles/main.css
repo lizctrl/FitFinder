@@ -117,3 +117,16 @@ body{background:radial-gradient(ellipse at 85% 0,rgba(126,156,77,.1),transparent
 .anatomy-image .image-label { color: #f5f7ef; background: #0c0f0be6; padding: 4px 7px; border-radius: 4px; font-size: 9px; letter-spacing: .6px; }
 .anatomy-image .equipment-label { background: #0c0f0be6; }
 .detail-figure.anatomy-figure img { height: auto; aspect-ratio: 3 / 2; object-fit: contain; background: #fff; padding: 10px; }
+
+.routine-pdf-export { margin: 12px 0 18px; }
+.routine-pdf-export > summary { width: fit-content; list-style: none; }
+.routine-pdf-export > summary:focus-visible { outline: 2px solid var(--mint); outline-offset: 4px; }
+.routine-pdf-export form { margin-top: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; }
+.routine-pdf-export fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.routine-pdf-export legend { font-size: 14px; font-weight: 700; }
+.routine-pdf-hint, .routine-pdf-status { font-size: 12px; line-height: 1.65; color: var(--muted); }
+.routine-pdf-status:empty { display: none; }
+.routine-pdf-days { display: flex; flex-wrap: wrap; gap: 8px; }
+.routine-pdf-days label { display: flex; align-items: center; gap: 7px; min-height: 44px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; cursor: pointer; }
+.routine-pdf-days input { accent-color: var(--mint); }
+.routine-pdf-export button:disabled { opacity: .65; cursor: wait; }

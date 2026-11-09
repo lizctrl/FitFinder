@@ -1,3 +1,4 @@
+import { createRoutinePdfExport } from './routine-pdf-export';
 import type { Exercise } from '../types/exercise';
 import type { RoutinesStore } from '../state/routines';
 import type { Routine, RoutineResult } from '../types/routine';
@@ -119,6 +120,9 @@ export function createRoutinesView(container: HTMLElement, store: RoutinesStore,
         const remove = action('Quitar', () => { report(store.removeExercise(routine.id, exercise.id)); render(routine.id); }, 'text-button danger-button');
         remove.setAttribute('aria-label', `Quitar ${exercise.name} de ${routine.name}`);
         row.append(identity, order, form, remove); card.append(row);
+      }
+      if (routine.items.length) {
+        card.append(createRoutinePdfExport(() => store.list.find(item => item.id === routine.id), exercises));
       }
       const footer = document.createElement('div'); footer.className = 'routine-card-footer';
       const browse = document.createElement('a'); browse.href = '#catalog'; browse.className = 'secondary-button'; browse.textContent = 'Añadir ejercicios ↗';
